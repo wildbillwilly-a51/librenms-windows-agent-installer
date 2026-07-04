@@ -4,3 +4,4 @@
 
 - Added the initial public generic LibreNMS Windows Agent overlay installer.
 - Added local-first project workflow tracking for installer maintenance.
+- Added Codex-oriented project documentation and upstream sync guidance.

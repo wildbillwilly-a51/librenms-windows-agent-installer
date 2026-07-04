@@ -57,3 +57,13 @@ sudo bash ./rollback-overlay.sh --librenms-root /opt/librenms
 
 Add `--delete-apps` only when you intentionally want to remove existing
 `windows-agent` application rows and metrics.
+
+## Project Documentation
+
+For Codex or maintainer handoff, start with:
+
+- `CURRENT-STATE.md`
+- `AGENTS.md`
+- `docs/codex-project-guide.md`
+- `docs/upstream-sync.md`
+- `docs/release-runbook.md`

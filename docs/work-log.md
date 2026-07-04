@@ -7,6 +7,9 @@
 - Added local-first project workflow files so this local Git repo is the
   primary project record and GitHub remains the sanitized public distribution
   mirror.
+- Added full project documentation for opening this folder as its own Codex
+  project, including current state, read order, release runbook, and upstream
+  sync model.
 - Validation: installer syntax, tarball listing, checksum generation, raw
   GitHub URL checks, and legacy-branding scan were run during initial
   publication. PHP lint was skipped because PHP is not installed locally.
