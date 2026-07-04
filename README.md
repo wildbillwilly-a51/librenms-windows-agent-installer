@@ -1,6 +1,45 @@
 # LibreNMS Windows Agent Installer
 
-One-command installer for the generic Windows Agent LibreNMS overlay.
+One-command installers for the generic Windows Agent LibreNMS overlay and the
+Windows-side agent MSI.
+
+## Windows Agent MSI
+
+Run PowerShell as Administrator on each Windows host that should expose the
+agent on TCP `6556`:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/install-agent.ps1 -OutFile $env:TEMP\install-agent.ps1; & $env:TEMP\install-agent.ps1"
+```
+
+Silent install:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/install-agent.ps1 -OutFile $env:TEMP\install-agent.ps1; & $env:TEMP\install-agent.ps1 -Silent -ListenAddress 0.0.0.0 -ListenPort 6556 -AddFirewallRule 1 -StartService 1"
+```
+
+Direct MSI download:
+
+```text
+https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/artifacts/librenms-windows-agent-0.6.0.msi
+```
+
+Direct silent MSI install after download:
+
+```powershell
+msiexec /i librenms-windows-agent-0.6.0.msi /qn LISTEN_ADDRESS=0.0.0.0 LISTEN_PORT=6556 ADD_FIREWALL_RULE=1 START_SERVICE=1
+```
+
+Silent uninstall:
+
+```powershell
+msiexec /x librenms-windows-agent-0.6.0.msi /qn
+```
+
+Supported MSI properties are `LISTEN_ADDRESS`, `LISTEN_PORT`,
+`ADD_FIREWALL_RULE`, `START_SERVICE`, `CONFIG_PATH`, and `PRESERVE_CONFIG`.
+
+## LibreNMS Server Overlay
 
 Run this command on each LibreNMS server or distributed poller node that may
 render or poll Windows Agent data:
@@ -24,14 +63,15 @@ curl -fsSL https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-
 
 ## What It Installs
 
+- Windows MSI installing the `LibreNMSWindowsAgent` service.
 - LibreNMS `unix-agent` parser for `windows_agent_*` sections.
 - LibreNMS application parser and page for the `windows-agent` app.
 - Application graph definitions for Windows Agent health and visibility.
 - A reapply command and systemd timer so the overlay can be restored after
   LibreNMS updates.
 
-The Windows device must already run an agent that emits `windows_agent_*`
-sections over TCP `6556`. This installer only changes the LibreNMS server side.
+The Windows device must run the Windows agent MSI or another compatible agent
+that emits `windows_agent_*` sections over TCP `6556`.
 
 ## After Install
 

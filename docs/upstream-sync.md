@@ -21,10 +21,11 @@ project. Run the promotion from this public installer repository:
 .\scripts\promote-from-dev-overlay.ps1
 ```
 
-The script builds the private development overlay package into a temporary
-directory, converts the package to generic identifiers, updates the public
-package/checksum/docs, validates the generated artifact, creates a local
-commit, pushes `main` to GitHub, and verifies the raw installer/package URLs.
+The script builds the private development overlay package and generic Windows
+MSI into temporary directories, converts the overlay package to generic
+identifiers, updates the public package/checksum/docs, validates the generated
+artifacts, creates a local commit, pushes `main` to GitHub, and verifies the
+raw installer/package URLs.
 
 The manual review boundary is the promotion into this installer repository. A
 successful installer repo commit is authorization to sync the public GitHub
@@ -37,12 +38,14 @@ The public conversion targets are:
 - LibreNMS app type: `windows-agent`
 - UI name: `Windows Agent`
 - overlay package: `librenms-windows-agent-overlay-0.6.0.tar.gz`
+- Windows MSI: `librenms-windows-agent-0.6.0.msi`
+- Windows service name: `LibreNMSWindowsAgent`
 
 When syncing a new version, record:
 
 - upstream source commit or tag
 - public package version
-- package SHA256
+- overlay and MSI SHA256 values
 - validation performed in the development project
 - local validation performed in this repo
 - known compatibility requirements for Windows agent output
@@ -78,7 +81,7 @@ Recommended migration phases:
 
 Until the generic overlay source is moved here, use an explicit promotion step:
 
-1. Build and validate the private development overlay.
+1. Build and validate the private development overlay and Windows agent.
 2. Run `scripts/promote-from-dev-overlay.ps1` from this repo.
 3. The script validates, commits locally, pushes to GitHub, and checks raw URLs.
 
@@ -90,13 +93,16 @@ Every sync must include a public-safety scan.
 ### 0.6.0
 
 - Public package: `artifacts/librenms-windows-agent-overlay-0.6.0.tar.gz`
+- Public Windows MSI: `artifacts/librenms-windows-agent-0.6.0.msi`
 - Upstream development commit: `eedf0df`
-- SHA256:
+- Overlay SHA256:
   `b45e5be3314964dd62909bc085557ba13b4b4386ffca3318bcc5d65eb96a5234`
+- Windows MSI SHA256:
+  pending next promotion
 - Compatibility: requires Windows agent output using `windows_agent` and
   `windows_agent_*` section names.
 - Promotion method: `scripts/promote-from-dev-overlay.ps1` built the
-  development overlay package into a temporary directory, converted it to
-  generic public identifiers, regenerated the checksum, and scanned the package
-  for legacy/site-specific branding.
+  development overlay package and public MSI into temporary directories,
+  converted overlay files to generic public identifiers, regenerated checksums,
+  and scanned generated public payloads for legacy/site-specific branding.
 - PHP lint: run when PHP is available on the promotion workstation.

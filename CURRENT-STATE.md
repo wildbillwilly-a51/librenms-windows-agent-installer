@@ -9,9 +9,12 @@ project.
   maintainer workstation.
 - Public GitHub distribution mirror:
   `https://github.com/wildbillwilly-a51/librenms-windows-agent-installer`
-- Installer entry point: `install.sh`
+- LibreNMS overlay installer entry point: `install.sh`
+- Windows agent installer entry point: `install-agent.ps1`
 - Published overlay package:
   `artifacts/librenms-windows-agent-overlay-0.6.0.tar.gz`
+- Published Windows MSI:
+  `artifacts/librenms-windows-agent-0.6.0.msi`
 - Package checksum manifest: `SHA256SUMS`
 - Project rules: `AGENTS.md`
 - Work history: `docs/work-log.md`
@@ -22,10 +25,16 @@ distribution mirror for sanitized installer content.
 ## Current Release
 
 - Current version: `0.6.0`
-- Public install command:
+- Public LibreNMS overlay install command:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/install.sh | sudo bash
+```
+
+- Public Windows agent silent install command:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/install-agent.ps1 -OutFile $env:TEMP\install-agent.ps1; & $env:TEMP\install-agent.ps1 -Silent"
 ```
 
 The repository owner path is account-derived. All installer, overlay, app, and
@@ -33,6 +42,7 @@ package identifiers are generic.
 
 ## Current Functionality
 
+- Publishes a Windows MSI that installs the `LibreNMSWindowsAgent` service.
 - Installs a generic LibreNMS server-side overlay for Windows Agent visibility.
 - Expects Windows agents to emit `windows_agent` and `windows_agent_*` sections
   through LibreNMS `unix-agent`.
@@ -43,7 +53,9 @@ package identifiers are generic.
   after LibreNMS updates.
 - Verifies the downloaded package with `SHA256SUMS` before installation.
 
-This repo does not install the Windows-side agent.
+The Windows MSI supports silent `msiexec` properties for listener address,
+listener port, firewall rule, service start, config path, and config
+preservation.
 
 ## Validation Baseline
 
@@ -51,8 +63,10 @@ Smallest useful local validation:
 
 ```powershell
 bash -n ./install.sh
+powershell.exe -NoProfile -Command "[void][scriptblock]::Create((Get-Content -Raw .\install-agent.ps1))"
 tar -tzf .\artifacts\librenms-windows-agent-overlay-0.6.0.tar.gz
 Get-FileHash -Algorithm SHA256 .\artifacts\librenms-windows-agent-overlay-0.6.0.tar.gz
+Get-FileHash -Algorithm SHA256 .\artifacts\librenms-windows-agent-0.6.0.msi
 ```
 
 Before publishing, also scan public content for credentials, private

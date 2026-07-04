@@ -14,9 +14,10 @@ Stop if unrelated local changes are present.
 
 ## 2. Update Installer Or Payload
 
-For installer-only changes, edit `install.sh` and `README.md` as needed.
+For installer-only changes, edit `install.sh`, `install-agent.ps1`, and
+`README.md` as needed.
 
-For overlay changes:
+For overlay or Windows MSI changes:
 
 1. Validate the overlay behavior in the private development project.
 2. Run the scripted promotion from this repo:
@@ -25,10 +26,11 @@ For overlay changes:
 .\scripts\promote-from-dev-overlay.ps1
 ```
 
-The script builds the development overlay into a temp directory, converts it to
-generic public identifiers, updates `artifacts/`, regenerates `SHA256SUMS`,
-updates release docs, validates the result, creates a local commit, pushes
-`main` to GitHub, and verifies raw GitHub URLs.
+The script builds the development overlay and public Windows MSI into temp
+directories, converts overlay content to generic public identifiers, updates
+`artifacts/`, regenerates `SHA256SUMS`, updates release docs, validates the
+result, creates a local commit, pushes `main` to GitHub, and verifies raw
+GitHub URLs.
 
 Use `-NoCommit` or `-NoPush` only when testing the promotion script itself.
 
@@ -36,8 +38,10 @@ Use `-NoCommit` or `-NoPush` only when testing the promotion script itself.
 
 ```powershell
 bash -n ./install.sh
+powershell.exe -NoProfile -Command "[void][scriptblock]::Create((Get-Content -Raw .\install-agent.ps1))"
 tar -tzf .\artifacts\librenms-windows-agent-overlay-0.6.0.tar.gz
 Get-FileHash -Algorithm SHA256 .\artifacts\librenms-windows-agent-overlay-0.6.0.tar.gz
+Get-FileHash -Algorithm SHA256 .\artifacts\librenms-windows-agent-0.6.0.msi
 git diff --check
 ```
 
@@ -85,5 +89,8 @@ After pushing, verify raw URLs:
 
 ```powershell
 curl.exe -fsSI https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/install.sh
+curl.exe -fsSI https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/install-agent.ps1
+curl.exe -fsSI https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/SHA256SUMS
 curl.exe -fsSI https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/artifacts/librenms-windows-agent-overlay-0.6.0.tar.gz
+curl.exe -fsSI https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/artifacts/librenms-windows-agent-0.6.0.msi
 ```

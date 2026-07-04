@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [string]$DevRepo = (Join-Path $PSScriptRoot '..\..\librenms-windows-agent'),
+    [string]$DevRepo = '',
     [string]$Version = '',
     [switch]$NoCommit,
     [switch]$NoPush,
@@ -10,6 +10,9 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')
+if (-not $DevRepo) {
+    $DevRepo = Join-Path $repoRoot '..\librenms-windows-agent'
+}
 $devRoot = Resolve-Path -LiteralPath $DevRepo
 $artifactsDir = Join-Path $repoRoot 'artifacts'
 $workRoot = Join-Path ([System.IO.Path]::GetTempPath()) ('librenms-windows-agent-promote-' + [guid]::NewGuid().ToString('N'))
@@ -230,6 +233,10 @@ try {
     if (-not (Test-Path -LiteralPath $builder)) {
         throw "Development overlay builder not found: $builder"
     }
+    $msiBuilder = Join-Path $devRoot 'scripts\build-public-msi.ps1'
+    if (-not (Test-Path -LiteralPath $msiBuilder)) {
+        throw "Development public MSI builder not found: $msiBuilder"
+    }
 
     Write-Output "Building development overlay package from $devCommit"
     $devPackage = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $builder -Version $Version -ArtifactsDir $devArtifacts
@@ -239,6 +246,16 @@ try {
     $devPackage = ($devPackage | Select-Object -Last 1).Trim()
     if (-not (Test-Path -LiteralPath $devPackage)) {
         throw "Development package not found: $devPackage"
+    }
+
+    Write-Output "Building public Windows agent MSI from $devCommit"
+    $devMsi = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $msiBuilder -Version $Version -ArtifactsDir $devArtifacts
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Development public MSI build failed.'
+    }
+    $devMsi = ($devMsi | Select-Object -Last 1).Trim()
+    if (-not (Test-Path -LiteralPath $devMsi)) {
+        throw "Development public MSI not found: $devMsi"
     }
 
     tar -xzf $devPackage -C $extractRoot
@@ -280,11 +297,14 @@ try {
     Assert-NoLegacyBranding -Path $genericRoot
 
     $targetPackage = Join-Path $artifactsDir "librenms-windows-agent-overlay-$Version.tar.gz"
+    $targetMsi = Join-Path $artifactsDir "librenms-windows-agent-$Version.msi"
     Remove-Item -LiteralPath $targetPackage -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $targetMsi -Force -ErrorAction SilentlyContinue
     tar -C $stageRoot -czf $targetPackage $genericPackageRootName
     if ($LASTEXITCODE -ne 0) {
         throw 'Failed to create generic overlay package.'
     }
+    Copy-Item -LiteralPath $devMsi -Destination $targetMsi -Force
 
     tar -tzf $targetPackage | Out-Null
     if ($LASTEXITCODE -ne 0) {
@@ -292,7 +312,8 @@ try {
     }
 
     $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $targetPackage).Hash.ToLowerInvariant()
-    Set-Utf8NoBom -Path (Join-Path $repoRoot 'SHA256SUMS') -Value "$hash  artifacts/librenms-windows-agent-overlay-$Version.tar.gz`n"
+    $msiHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $targetMsi).Hash.ToLowerInvariant()
+    Set-Utf8NoBom -Path (Join-Path $repoRoot 'SHA256SUMS') -Value (($hash + "  artifacts/librenms-windows-agent-overlay-$Version.tar.gz`n") + ($msiHash + "  artifacts/librenms-windows-agent-$Version.msi`n"))
 
     Update-CurrentState -Path (Join-Path $repoRoot 'CURRENT-STATE.md') -Version $Version
     Update-InstallerVersion -Path (Join-Path $repoRoot 'install.sh') -Version $Version
@@ -301,21 +322,24 @@ try {
         ('### {0}' -f $Version),
         '',
         ('- Public package: `artifacts/librenms-windows-agent-overlay-{0}.tar.gz`' -f $Version),
+        ('- Public Windows MSI: `artifacts/librenms-windows-agent-{0}.msi`' -f $Version),
         ('- Upstream development commit: `{0}`' -f $devCommit),
-        '- SHA256:',
+        '- Overlay SHA256:',
         ('  `{0}`' -f $hash),
+        '- Windows MSI SHA256:',
+        ('  `{0}`' -f $msiHash),
         '- Compatibility: requires Windows agent output using `windows_agent` and',
         '  `windows_agent_*` section names.',
         '- Promotion method: `scripts/promote-from-dev-overlay.ps1` built the',
-        '  development overlay package into a temporary directory, converted it to',
-        '  generic public identifiers, regenerated the checksum, and scanned the package',
-        '  for legacy/site-specific branding.',
+        '  development overlay package and public MSI into temporary directories,',
+        '  converted overlay files to generic public identifiers, regenerated checksums,',
+        '  and scanned generated public payloads for legacy/site-specific branding.',
         '- PHP lint: run when PHP is available on the promotion workstation.'
     ) -join "`n"
     Add-Or-ReplacePromotionRecord -Path (Join-Path $repoRoot 'docs\upstream-sync.md') -Version $Version -Record $record
 
-    Add-DatedBullet -Path (Join-Path $repoRoot 'CHANGELOG.md') -Bullet "Promoted generic LibreNMS Windows Agent overlay package $Version from validated development overlay commit $devCommit."
-    Add-DatedBullet -Path (Join-Path $repoRoot 'docs\work-log.md') -Bullet "Promoted overlay package $Version from development commit $devCommit with checksum $hash. Validation: generated package tar listing, checksum update, and legacy-branding scan passed; PHP lint depends on local PHP availability."
+    Add-DatedBullet -Path (Join-Path $repoRoot 'CHANGELOG.md') -Bullet "Promoted generic LibreNMS Windows Agent overlay package and Windows MSI $Version from validated development commit $devCommit."
+    Add-DatedBullet -Path (Join-Path $repoRoot 'docs\work-log.md') -Bullet "Promoted overlay package $Version and Windows MSI from development commit $devCommit with checksums $hash and $msiHash. Validation: generated package tar listing, MSI build, checksum update, public agent --once check, and legacy-branding scans passed; PHP lint depends on local PHP availability."
 
     $php = Get-Command php -ErrorAction SilentlyContinue
     if ($php) {
@@ -356,7 +380,7 @@ try {
     if ($NoCommit) {
         Write-Output 'Promotion files updated. No commit created because -NoCommit was set.'
     } else {
-        & git -C $repoRoot add artifacts "install.sh" "SHA256SUMS" "CURRENT-STATE.md" "CHANGELOG.md" "docs/upstream-sync.md" "docs/work-log.md"
+        & git -C $repoRoot add artifacts "install.sh" "install-agent.ps1" "SHA256SUMS" "CURRENT-STATE.md" "CHANGELOG.md" "docs/upstream-sync.md" "docs/work-log.md" "README.md" "docs/release-runbook.md"
         if ($LASTEXITCODE -ne 0) {
             throw 'git add failed.'
         }
@@ -380,13 +404,18 @@ try {
 
             $rawBaseUrl = 'https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main'
             Test-RawUrl -Url "$rawBaseUrl/install.sh"
+            Test-RawUrl -Url "$rawBaseUrl/install-agent.ps1"
+            Test-RawUrl -Url "$rawBaseUrl/SHA256SUMS"
             Test-RawUrl -Url "$rawBaseUrl/artifacts/librenms-windows-agent-overlay-$Version.tar.gz"
+            Test-RawUrl -Url "$rawBaseUrl/artifacts/librenms-windows-agent-$Version.msi"
             Write-Output 'GitHub push and raw URL verification completed.'
         }
     }
 
     Write-Output "Promoted overlay package $Version"
     Write-Output "SHA256: $hash"
+    Write-Output "Promoted Windows MSI $Version"
+    Write-Output "MSI SHA256: $msiHash"
 } finally {
     Remove-Item -LiteralPath $workRoot -Recurse -Force -ErrorAction SilentlyContinue
 }
