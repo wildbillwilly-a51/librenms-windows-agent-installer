@@ -2,6 +2,8 @@
 
 ## 2026-07-04
 
+- Promoted overlay package 0.6.0 from development commit eedf0df with checksum b45e5be3314964dd62909bc085557ba13b4b4386ffca3318bcc5d65eb96a5234. Validation: generated package tar listing, checksum update, and legacy-branding scan passed; PHP lint depends on local PHP availability.
+
 - Created the public generic LibreNMS Windows Agent installer repository with a
   one-command server-side overlay installer and checksum-pinned release payload.
 - Added local-first project workflow files so this local Git repo is the

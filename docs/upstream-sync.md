@@ -90,10 +90,13 @@ Every sync must include a public-safety scan.
 ### 0.6.0
 
 - Public package: `artifacts/librenms-windows-agent-overlay-0.6.0.tar.gz`
+- Upstream development commit: `eedf0df`
 - SHA256:
-  `604d947221ff7dec81a8b57f166aa73f87073e9cd76791015b79370e9c262454`
+  `b45e5be3314964dd62909bc085557ba13b4b4386ffca3318bcc5d65eb96a5234`
 - Compatibility: requires Windows agent output using `windows_agent` and
   `windows_agent_*` section names.
-- Local validation: shell syntax check, tarball listing, checksum generation,
-  raw GitHub URL checks, and public-safety scans.
-- PHP lint: skipped locally because PHP was not installed.
+- Promotion method: `scripts/promote-from-dev-overlay.ps1` built the
+  development overlay package into a temporary directory, converted it to
+  generic public identifiers, regenerated the checksum, and scanned the package
+  for legacy/site-specific branding.
+- PHP lint: run when PHP is available on the promotion workstation.
