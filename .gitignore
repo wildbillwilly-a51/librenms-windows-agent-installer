@@ -1,0 +1,31 @@
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.pfx
+*.p12
+*.crt
+*.cer
+*.token
+*cookie*
+
+# Runtime and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+Thumbs.db
+.DS_Store
+
+# Generated validation output
+coverage/
+test-results/
+screenshots/
+videos/
+.cache/
+tmp/
+temp/
