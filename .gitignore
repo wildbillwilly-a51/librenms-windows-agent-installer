@@ -26,6 +26,7 @@ coverage/
 test-results/
 screenshots/
 videos/
+diagnostics/
 .cache/
 tmp/
 temp/
