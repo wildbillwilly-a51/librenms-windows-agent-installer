@@ -3,6 +3,11 @@
 This is the read-first handoff for the universal LibreNMS Windows Agent
 project.
 
+The canonical local project folder and intended GitHub repository name are
+`librenms-windows-agent`. The prior A51 development repository is retained
+locally as `librenms-windows-agent-legacy` only until consolidation is fully
+verified.
+
 ## Project Boundary
 
 This repository is now the canonical development and public distribution
@@ -73,13 +78,16 @@ so C# compilation, console tests, and WiX MSI rebuilding require an SDK-enabled
 environment. Overlay packaging, shell syntax, PowerShell parsing, tar listing,
 checksum validation, and source safety scans remain locally available.
 
-Public GitHub synchronization is pending because the current shell has no
-non-interactive Git credential. The verified local commits remain the source of
-truth until authentication is restored.
+Public GitHub synchronization and the GitHub repository-name swap are pending
+because neither the current shell nor the available browser session has GitHub
+authentication. The verified local commits remain the source of truth until
+authentication is restored.
 
 ## Next Recommended Action
 
-Restore Git authentication and publish the verified local commits. Then install
+Sign in to GitHub, rename the legacy remote repository to
+`librenms-windows-agent-legacy`, rename the canonical remote repository to
+`librenms-windows-agent`, and publish the verified local commits. Then install
 or use an approved .NET SDK environment, run the migrated agent tests and native
 MSI build, and begin the next universal collector or overlay work directly in
 this repository.

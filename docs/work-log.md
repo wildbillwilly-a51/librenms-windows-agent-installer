@@ -1,5 +1,19 @@
 # Work Log
 
+## 2026-07-15
+
+- Audited the canonical and legacy repositories before consolidation. All 55
+  agent source files matched after the intentional generic namespace, service,
+  and protocol renames; the 50 C# test names also matched, and the newer legacy
+  commits changed only private project-export context.
+- Quarantined the legacy local repository as
+  `librenms-windows-agent-legacy`, preserving its modified README, untracked
+  export, Git history, and ignored internal artifacts.
+- Updated the canonical project name, public installer repository defaults,
+  and README URLs from `librenms-windows-agent-installer` to
+  `librenms-windows-agent`. GitHub repository renaming and publication remain
+  pending until GitHub authentication is available.
+
 ## 2026-07-14
 
 - Migrated the current universal agent core, Windows service collectors,

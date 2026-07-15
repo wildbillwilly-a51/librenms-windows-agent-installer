@@ -2,9 +2,9 @@
 param(
     [string]$Version = '0.6.11',
     [string]$RepoOwner = 'wildbillwilly-a51',
-    [string]$RepoName = 'librenms-windows-agent-installer',
+    [string]$RepoName = 'librenms-windows-agent',
     [string]$RepoBranch = 'main',
-    [string]$WorkDir = "$env:TEMP\librenms-windows-agent-installer",
+    [string]$WorkDir = "$env:TEMP\librenms-windows-agent",
     [string]$ListenAddress = '0.0.0.0',
     [int]$ListenPort = 6556,
     [int]$AddFirewallRule = 1,

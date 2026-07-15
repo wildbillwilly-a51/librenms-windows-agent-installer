@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-15
+
+- Renamed the canonical product repository from
+  `librenms-windows-agent-installer` to `librenms-windows-agent` and updated
+  public installer defaults and documentation links for the unified agent,
+  overlay, MSI, and distribution project.
+
 ## 2026-07-14
 
 - Transitioned the repository into the canonical universal development source

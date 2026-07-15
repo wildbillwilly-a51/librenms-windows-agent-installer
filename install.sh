@@ -4,7 +4,7 @@ set -euo pipefail
 VERSION="${VERSION:-0.6.11}"
 LIBRENMS_ROOT="${LIBRENMS_ROOT:-/opt/librenms}"
 REPO_OWNER="${REPO_OWNER:-wildbillwilly-a51}"
-REPO_NAME="${REPO_NAME:-librenms-windows-agent-installer}"
+REPO_NAME="${REPO_NAME:-librenms-windows-agent}"
 REPO_BRANCH="${REPO_BRANCH:-main}"
 BASE_URL="${BASE_URL:-https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${REPO_BRANCH}}"
 PACKAGE_NAME="librenms-windows-agent-overlay-${VERSION}.tar.gz"

@@ -1,4 +1,4 @@
-# LibreNMS Windows Agent Installer Project Rules
+# LibreNMS Windows Agent Project Rules
 
 This repository is the canonical universal development and public distribution
 project for the LibreNMS Windows Agent and LibreNMS overlay.

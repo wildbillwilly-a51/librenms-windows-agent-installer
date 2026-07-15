@@ -48,7 +48,7 @@ Run this on the LibreNMS management/web node and on every distributed poller
 node that may poll Windows Agent devices:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent/main/install.sh | sudo bash
 ```
 
 The overlay installs:
@@ -64,14 +64,14 @@ The overlay installs:
 Run PowerShell as Administrator on each Windows host:
 
 ```powershell
-iwr -UseBasicParsing https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/install-agent.ps1 -OutFile $env:TEMP\install-agent.ps1
+iwr -UseBasicParsing https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent/main/install-agent.ps1 -OutFile $env:TEMP\install-agent.ps1
 & $env:TEMP\install-agent.ps1 -Silent
 ```
 
 Direct MSI link:
 
 ```text
-https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/artifacts/librenms-windows-agent-0.6.11.msi
+https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent/main/artifacts/librenms-windows-agent-0.6.11.msi
 ```
 
 The default Windows install is normally enough. It installs the
@@ -196,19 +196,19 @@ echo "Removed Applications and Unix Agent overrides for device " . $device->devi
 Custom LibreNMS root:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/install.sh | sudo env LIBRENMS_ROOT=/path/to/librenms bash
+curl -fsSL https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent/main/install.sh | sudo env LIBRENMS_ROOT=/path/to/librenms bash
 ```
 
 Install a specific overlay version:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/install.sh | sudo bash -s -- --version 0.6.11
+curl -fsSL https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent/main/install.sh | sudo bash -s -- --version 0.6.11
 ```
 
 Preview without changing the node:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent-installer/main/install.sh | sudo bash -s -- --dry-run
+curl -fsSL https://raw.githubusercontent.com/wildbillwilly-a51/librenms-windows-agent/main/install.sh | sudo bash -s -- --dry-run
 ```
 
 ### Windows Agent MSI Options
