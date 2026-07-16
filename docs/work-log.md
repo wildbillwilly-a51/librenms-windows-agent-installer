@@ -22,6 +22,10 @@
   `1e65f17d76750e0690afef82a806d33670ae60423648dec27209c2a11f899b8d`.
   MSI SHA256:
   `925456f75a8d56c0eeb73af3fc610de4f4379f50a80cb3443e0933c8d8f40582`.
+- Added committed sanitized-backup policy that excludes versioned release
+  binaries from the source fallback. Release binaries remain checksum-verified
+  public distribution artifacts in the canonical repository; the isolated
+  backup preserves the audited source snapshot.
 
 ## 2026-07-15
 
