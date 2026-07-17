@@ -20,7 +20,7 @@
     "windows_agent_factorytalk_runtime_processes": "name=Communication.exe pid=4100 role=communications cpu_percent=8.5 working_set_bytes=209715200 private_bytes=157286400 handle_count=300 thread_count=40 io_read_bytes_per_sec=3072 io_write_bytes_per_sec=1024 uptime_seconds=7200\nname=Directory.exe pid=4200 role=directory cpu_percent=4 working_set_bytes=104857600 private_bytes=52428800 handle_count=120 thread_count=18 io_read_bytes_per_sec=1024 io_write_bytes_per_sec=1024 uptime_seconds=7100",
     "windows_agent_factorytalk_native_summary": "mode=local state=ok enabled=1 available=1 signature_valid=1 version=1.08.00 snapshot_age_seconds=120 snapshot_duration_ms=5500 last_error=none",
     "windows_agent_factorytalk_linx_connections": "instance=1 driver=ethernet_ip direction=incoming active=3 accepted=100 attempted=0 closed=97\ninstance=1 driver=ethernet_ip direction=outgoing active=4 accepted=0 attempted=80 closed=76\ninstance=2 driver=ethernet direction=incoming active=1 accepted=25 attempted=0 closed=24",
-    "windows_agent_factorytalk_linx_backplane": "instance=1 slot=3 packets_received=1200 packets_sent=900 send_failures=2",
+    "windows_agent_factorytalk_linx_backplane": "instance=1 slot=3 packets_received=1200 packets_sent=900 send_failures=0",
     "windows_agent_factorytalk_linx_transactions": "instance=1 in_use=5 pool_size=40\ninstance=2 in_use=1 pool_size=20",
     "windows_agent_factorytalk_livedata": "clients=7 sources=1",
     "windows_agent_tls_certificates_summary": "state=not_detected store_count=0 certificate_count=0 expired_count=0 expiring_warning_count=0 expiring_critical_count=0 not_yet_valid_count=0 invalid_chain_count=0 weak_key_count=0 weak_signature_count=0 missing_private_key_count=0 bound_count=0 binding_missing_count=0 unhealthy_count=0",
@@ -48,7 +48,7 @@
       "factorytalk_linx_closed": 197,
       "factorytalk_linx_packets_received": 1200,
       "factorytalk_linx_packets_sent": 900,
-      "factorytalk_linx_send_failures": 2,
+      "factorytalk_linx_send_failures": 0,
       "factorytalk_linx_transactions_in_use": 6,
       "factorytalk_linx_transaction_pool_size": 60,
       "factorytalk_livedata_clients": 7
@@ -69,7 +69,7 @@
       "windows-agent-factorytalk-linx-connections.active_in": 4,
       "windows-agent-factorytalk-linx-connections.accepted": 125,
       "windows-agent-factorytalk-linx-traffic.packets_recv": 1200,
-      "windows-agent-factorytalk-linx-traffic.send_fail": 2,
+      "windows-agent-factorytalk-linx-traffic.send_fail": 0,
       "windows-agent-factorytalk-linx-transactions.in_use": 6,
       "windows-agent-factorytalk-linx-transactions.pool_size": 60,
       "windows-agent-factorytalk-livedata.clients": 7
@@ -77,6 +77,13 @@
     "app_page": {
       "contains": [
         "FactoryTalk Runtime Metrics",
+        "Operational view",
+        "Trends",
+        "No actionable FactoryTalk conditions were detected",
+        "Top FactoryTalk Processes",
+        "Show all process metrics",
+        "Inventory and raw diagnostics",
+        "Additional graphs",
         "Native Counter Snapshot",
         "FactoryTalk Linx Connections",
         "FactoryTalk Linx Backplane",
@@ -86,11 +93,13 @@
         "FactoryTalk Linx Connection Churn",
         "FactoryTalk Live Data Clients",
         "ethernet_ip",
-        "1.08.00"
+        "1.08.00",
+        "10.0%"
       ],
       "not_contains": [
         "PRIVATE_CONTROLLER",
-        "198.51.100.4"
+        "198.51.100.4",
+        "condition(s) need attention"
       ]
     }
   }

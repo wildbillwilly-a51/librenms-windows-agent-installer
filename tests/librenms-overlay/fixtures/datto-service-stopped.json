@@ -37,10 +37,10 @@
       "datto_backup_processes.0.matched_count": "0"
     },
     "datastore": {
-      "windows-agent-windows-agent-backup-storage.services_not_running": 1,
-      "windows-agent-windows-agent-datto-backup.detected": 1,
-      "windows-agent-windows-agent-datto-backup.service_running": 0,
-      "windows-agent-windows-agent-datto-backup.health_issues": 1
+      "windows-agent-backup-storage.services_not_running": 1,
+      "windows-agent-datto-backup.detected": 1,
+      "windows-agent-datto-backup.service_running": 0,
+      "windows-agent-datto-backup.health_issues": 1
     }
   }
 }

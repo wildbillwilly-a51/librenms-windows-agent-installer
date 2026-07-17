@@ -19,6 +19,14 @@ Windows-side agent protocol.
 The app page is grouped by purpose under tabs and starts with a compact health
 overview. Section detail tables and trend graphs are collapsed by default so
 not-detected roles stay visible without blank tables or graph-heavy panels.
+FactoryTalk uses an issue-first operational view: a status and next-action
+banner, six key metrics, actionable conditions, and the five busiest runtime
+processes appear before any inventory. Complete process metrics, product and
+service inventory, ports, native Counter Monitor output, and Linx counter rows
+remain available in nested disclosures. Primary FactoryTalk trends appear
+first, while secondary graphs are one additional disclosure deeper. A
+transaction-pool utilization of 80 percent or greater is a display-only review
+cue; it does not create an alert or change an RRD schema.
 Startup type, current state, and status are displayed as service data only; they
 are not used as inclusion or exclusion filters. Role, AD/DFSR, and logged-on
 user sections are visibility-only. Auto-classified services, logged-on user

@@ -59,6 +59,14 @@ The overlay installs:
 - A systemd reapply timer so the overlay can be restored after LibreNMS
   updates.
 
+The FactoryTalk application view is issue-first. Its operational view shows a
+health assessment, recommended next action, core service state, runtime CPU and
+memory, Linx connections, transaction utilization, native snapshot state, and
+the five busiest FactoryTalk processes. Complete product, service, process,
+port, and native-counter rows remain available under `Inventory and raw
+diagnostics`; additional graphs are also collapsed separately. These display
+cues do not create LibreNMS alerts.
+
 ### 4. Install Or Update The Windows Agent
 
 Run PowerShell as Administrator on each Windows host:

@@ -2,6 +2,26 @@
 
 ## 2026-07-16
 
+- Reworked the FactoryTalk app-page presentation without changing collection,
+  alerts, or RRD schemas. The operational view now leads with status, next
+  action, six key metrics, actionable conditions, and the top five runtime
+  processes; complete inventory/counter rows and secondary graphs remain in
+  nested disclosures. Added healthy, stopped-service/port, missing-data, and
+  unavailable-native-snapshot fixture coverage, and corrected the app-page
+  fixture runner's stale source filename and duplicated legacy application-name
+  expectations.
+- Rebuilt the in-place 0.6.13 overlay package. Overlay SHA256:
+  `44268bddfdaa44f8702e0fed77aca2722c97b703073ccd93134a32aa69374b36`.
+  The MSI was intentionally unchanged at SHA256
+  `f80710d424b963da856396eb1e6643a98563e657b666b08ab88e7f571655bda6`.
+  JSON parsing, Git whitespace checks, 53 portable agent tests, complete source
+  and packaged PHP lint, all eight parser fixtures, all eight app-page fixtures,
+  package build, tar listing, manifest/payload inspection, checksum
+  verification, and headless healthy-desktop/warning-mobile rendering passed.
+  The public-readiness sanitizer passed with 162 included and 29 excluded
+  files; its generic history policy still rejects this repository's
+  intentionally tracked release artifacts and work log. No LibreNMS deployment
+  was performed.
 - Removed both agent PowerShell custom actions and their packaged scripts from
   0.6.13. The MSI now installs a permanent never-overwrite `agent.json`, starts
   the automatic service through the standard `ServiceControl` table, and uses

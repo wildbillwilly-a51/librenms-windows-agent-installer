@@ -2,6 +2,11 @@
 
 ## 2026-07-16
 
+- Reworked the FactoryTalk application page into an issue-first operational
+  view with recommended next actions, six key metrics, top-five runtime
+  processes, nested inventory/raw diagnostics, and secondary graph disclosure.
+  All existing FactoryTalk data and graph families remain available and no
+  alert behavior or RRD schema changed.
 - Replaced the 0.6.13 agent PowerShell custom-action pipeline with native MSI
   configuration installation, service start, and WiX firewall tables. Existing
   configuration is preserved, the complete FactoryTalk defaults are installed

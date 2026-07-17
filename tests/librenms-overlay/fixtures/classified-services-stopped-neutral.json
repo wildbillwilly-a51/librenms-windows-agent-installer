@@ -55,10 +55,10 @@
       "classified_service_groups.optional_windows.0.state": "Stopped"
     },
     "datastore": {
-      "windows-agent-windows-agent.watched_services_not_running": 0,
-      "windows-agent-windows-agent-classified-services.not_running": 1,
-      "windows-agent-windows-agent-backup-storage.vss_writers_failed": 0,
-      "windows-agent-windows-agent-backup-storage.services_not_running": 1
+      "windows-agent.watched_services_not_running": 0,
+      "windows-agent-classified-services.not_running": 1,
+      "windows-agent-backup-storage.vss_writers_failed": 0,
+      "windows-agent-backup-storage.services_not_running": 1
     },
     "app_page": {
       "contains": [

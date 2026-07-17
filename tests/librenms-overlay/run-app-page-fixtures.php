@@ -140,7 +140,12 @@ namespace {
     function assertContainsText(string $html, string $needle, string $fixture): void
     {
         if (! str_contains($html, $needle)) {
-            throw new RuntimeException("$fixture app page is missing expected text: $needle");
+            preg_match_all('/data-type="([^"]+)"/', $html, $matches);
+            $renderedGraphTypes = array_values(array_unique($matches[1] ?? []));
+            $graphContext = str_contains($needle, 'data-type=')
+                ? '; rendered graph types: ' . implode(', ', $renderedGraphTypes)
+                : '';
+            throw new RuntimeException("$fixture app page is missing expected text: $needle$graphContext");
         }
     }
 
@@ -170,7 +175,7 @@ namespace {
 
     $repoRoot = dirname(__DIR__, 2);
     $parserPath = $repoRoot . '/librenms-overlay/includes/polling/unix-agent/windows_agent.inc.php';
-    $pagePath = $repoRoot . '/librenms-overlay/includes/html/pages/device/apps/windows-agent-windows-agent.inc.php';
+    $pagePath = $repoRoot . '/librenms-overlay/includes/html/pages/device/apps/windows-agent.inc.php';
     $fixtureDir = __DIR__ . '/fixtures';
     $fixtures = glob($fixtureDir . '/*.json') ?: [];
     sort($fixtures);
@@ -186,6 +191,23 @@ namespace {
     if (! is_file($parserPath) || ! is_file($pagePath)) {
         fwrite(STDERR, "Required overlay files were not found\n");
         exit(2);
+    }
+
+    $renderOnly = '';
+    foreach (array_slice($argv, 1) as $argument) {
+        if (str_starts_with($argument, '--render=')) {
+            $renderOnly = basename(substr($argument, strlen('--render=')));
+        }
+    }
+    if ($renderOnly !== '') {
+        $renderFixturePath = $fixtureDir . '/' . $renderOnly;
+        if (! is_file($renderFixturePath)) {
+            fwrite(STDERR, "Fixture not found: $renderOnly\n");
+            exit(2);
+        }
+
+        echo renderFixture($renderFixturePath, $parserPath, $pagePath);
+        exit(0);
     }
 
     $failed = 0;

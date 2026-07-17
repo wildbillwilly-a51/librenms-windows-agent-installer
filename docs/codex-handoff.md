@@ -1,25 +1,26 @@
 # Codex Handoff
 
-- Current objective: Maintain the generic LibreNMS Windows Agent and overlay
-  release while keeping manual MSI installation straightforward and safe.
-- Current state: The repaired in-place release 0.6.13 enables the complete
-  bounded FactoryTalk feature set, supports same-version upgrades, keeps failed
-  upgrades rollback-safe, and no longer uses agent PowerShell custom actions.
-  Windows Installer owns default configuration, service startup, and firewall
-  registration. The installer wrapper retains the native-counter opt-out.
-- Next action: Install the repaired 0.6.13 MSI on an authorized FactoryTalk
-  pilot and observe service, listener, polling, and native snapshot state.
-- Blockers: None for local development. No deployment to a Windows endpoint or
-  LibreNMS node has been authorized by this setup task.
+- Current objective: Make the complete FactoryTalk metric set operationally
+  useful in LibreNMS without changing collection, alerts, or RRD schemas.
+- Current state: The 0.6.13 agent is polling successfully on the authorized
+  FactoryTalk pilot. The overlay source now presents an issue-first FactoryTalk
+  operational view with status, next action, key metrics, top processes, nested
+  raw diagnostics, and primary/secondary graph disclosure.
+- Next action: With explicit confirmation, install the updated overlay on the
+  LibreNMS web/poller nodes and verify the FactoryTalk view after a poll.
+- Blockers: None for local development or publication. No deployment is
+  authorized yet.
 - Important decisions: Keep the repository generic and public-safe; preserve
   existing RRD schemas; keep native Counter Monitor localhost-only, bounded,
   non-alerting, and explicitly disableable; require explicit authorization
   before endpoint deployment.
-- Branch/commit/sync: `main`; this handoff's containing repair commit is the
-  public 0.6.13 synchronization reference.
-- Validation complete: Release tests/build, MSI upgrade/native-service/config/
-  firewall table assertions, decompiled payload inspection, extracted config
-  validation, collector execution, listener bind/response, script parsing, and
-  checksum verification.
-- Validation remaining after containing-commit sync: authorized pilot endpoint
-  reinstall and normal post-install observation only.
+- Branch/commit/sync: `main`; this handoff's containing FactoryTalk usability
+  commit is the public 0.6.13 overlay synchronization reference.
+- Validation complete: 53 portable agent tests, full source/packaged PHP lint,
+  eight parser fixtures, eight app-page fixtures, package build/listing,
+  manifest/payload inspection, checksum verification, and healthy-desktop plus
+  warning-mobile headless rendering pass. The sanitized public snapshot passes;
+  the generic history policy rejects the intentionally tracked release
+  artifacts and work log, so the established direct sanitized push is required.
+- Validation remaining after containing-commit sync: authorized LibreNMS
+  overlay installation and post-poll browser observation only.
