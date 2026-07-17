@@ -2,6 +2,22 @@
 
 ## 2026-07-16
 
+- Diagnosed the follow-up 0.6.13 failure as Windows native command-line parsing:
+  quoted MSI directory values ended in a backslash, which consumed the closing
+  quote and corrupted later PowerShell arguments. Private endpoint evidence
+  remains outside this repository.
+- Corrected 0.6.13 in place by deriving the install directory from the installed
+  script and the data directory from the MSI registry value, with a safe common
+  application-data fallback. Added MSI build assertions that reject explicit
+  directory arguments and oversized custom-action commands.
+- Rebuilt release 0.6.13 in place. Overlay SHA256:
+  `384c77cfb3825dcf45d2528c2d61ad9e4454aa0db77f5b2468d9ed2c01cf631d`.
+  MSI SHA256:
+  `a866f5feb96095a28b3eacd5e47c5f0b9e5a50d67a258fab2db7419e89964784`.
+  The Windows PowerShell 5.1 space-containing-path test, all portable .NET
+  tests, .NET Framework/WiX builds, MSI metadata and command assertions, and
+  checksum generation passed. PHP remained unavailable, so overlay PHP lint
+  was skipped; overlay source behavior is unchanged.
 - Diagnosed a generic 0.6.13 major-upgrade failure from private non-production
   evidence. Windows Installer removed the prior package, then the deferred
   configuration action failed while launching the installed agent executable;

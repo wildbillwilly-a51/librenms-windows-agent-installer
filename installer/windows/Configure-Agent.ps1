@@ -1,12 +1,10 @@
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory = $true)]
     [Alias('i')]
-    [string]$InstallDir,
+    [string]$InstallDir = '',
 
-    [Parameter(Mandatory = $true)]
     [Alias('d')]
-    [string]$DataDir,
+    [string]$DataDir = '',
 
     [Alias('a')]
     [string]$ListenAddress = '0.0.0.0',
@@ -29,6 +27,19 @@ $ErrorActionPreference = 'Stop'
 
 $serviceName = 'LibreNMSWindowsAgent'
 $ruleName = 'LibreNMS Windows Agent TCP 6556'
+$dataRegistryPath = 'Registry::HKEY_LOCAL_MACHINE\Software\LibreNMS\Windows Agent'
+
+if ([string]::IsNullOrWhiteSpace($InstallDir)) {
+    $InstallDir = $PSScriptRoot
+}
+if ([string]::IsNullOrWhiteSpace($DataDir)) {
+    try {
+        $DataDir = Get-ItemPropertyValue -LiteralPath $dataRegistryPath -Name DataDir -ErrorAction Stop
+    } catch {
+        $DataDir = Join-Path ([Environment]::GetFolderPath('CommonApplicationData')) 'LibreNMS\Windows Agent'
+    }
+}
+
 $configTarget = Join-Path $DataDir 'agent.json'
 $templatePath = Join-Path $InstallDir 't.json'
 $exePath = Join-Path $InstallDir 'LibreNMS.WindowsAgent.Service.exe'

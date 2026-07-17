@@ -76,6 +76,10 @@ function Assert-MsiUpgradeSafety {
     }
     $target = Get-MsiTableValue $MsiPath "SELECT ``Target`` FROM ``CustomAction`` WHERE ``Action``='ConfigureAgent'"
     if ($target -notmatch 'ENABLE_FACTORYTALK_NATIVE_COUNTERS') { throw 'ConfigureAgent does not receive the FactoryTalk feature property.' }
+    if ($target -match '(?i)(?:^|\s)-(?:i|d)(?:\s|$)') {
+        throw 'ConfigureAgent must derive installer directories instead of receiving quoted directory values that end in a backslash.'
+    }
+    if ($target.Length -gt 255) { throw 'ConfigureAgent command exceeds the Windows Installer CustomAction Target limit.' }
 }
 
 New-Item -ItemType Directory -Force -Path $workRoot, $payloadDir, $assetsDir, $msiOutputDir, $ArtifactsDir | Out-Null

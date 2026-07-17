@@ -2,6 +2,9 @@
 
 ## 2026-07-16
 
+- Corrected the repaired 0.6.13 MSI configuration command so quoted directory
+  properties cannot consume later PowerShell arguments. The installed script
+  now derives its own install path and reads the MSI data path from the registry.
 - Repaired the 0.6.13 MSI in place: same-version upgrades are supported, prior
   packages are removed inside the rollback boundary, preserved configurations
   receive the complete FactoryTalk settings, and service startup is now the

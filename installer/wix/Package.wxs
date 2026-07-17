@@ -90,7 +90,7 @@
       Execute="deferred"
       Impersonate="no"
       Return="check"
-      ExeCommand='powershell.exe -NoP -EP Bypass -F "[INSTALLFOLDER]c.ps1" -i "[INSTALLFOLDER]" -d "[DATADIR]" -a "[LISTEN_ADDRESS]" -p [LISTEN_PORT] -f [ADD_FIREWALL_RULE] -s [START_SERVICE] -c "[CONFIG_PATH]" -k [PRESERVE_CONFIG] -n [ENABLE_FACTORYTALK_NATIVE_COUNTERS]' />
+      ExeCommand='powershell.exe -NoP -EP Bypass -F "[INSTALLFOLDER]c.ps1" -a "[LISTEN_ADDRESS]" -p [LISTEN_PORT] -f [ADD_FIREWALL_RULE] -s [START_SERVICE] -c "[CONFIG_PATH]" -k [PRESERVE_CONFIG] -n [ENABLE_FACTORYTALK_NATIVE_COUNTERS]' />
 
     <CustomAction
       Id="RemoveFirewallRule"

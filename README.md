@@ -82,6 +82,9 @@ feature set, including localhost Counter Monitor snapshots every 15 minutes.
 The repaired 0.6.13 package can replace an earlier 0.6.13 build in place. Major
 upgrades remove the prior package inside the MSI rollback boundary, and setup
 reports success only after the installed Windows service reaches `Running`.
+The configuration action derives its install and data directories internally,
+avoiding Windows command-line corruption from quoted MSI directory properties
+that end in a backslash.
 
 `0.0.0.0` is the local bind address on the Windows host. It is not the LibreNMS
 server or poller IP.
